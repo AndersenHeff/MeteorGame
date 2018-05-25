@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Rectangle;
 
 public class GameObjects 
 {
@@ -12,6 +13,18 @@ public class GameObjects
 		this.gWidth = gWidth;
 		this.gHeight = gHeight;
 	}
+	
+	
+	public Rectangle getRect() 
+	{
+		return new Rectangle(x, y, width, height);
+	}
+	public boolean intersects(Meteor meteor) 
+	{
+		return meteor.getRect().intersects(this.getRect());
+	}
+	
+	
 	
 	public int getWidth() 
 	{

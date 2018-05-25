@@ -6,8 +6,8 @@ public class GameRunner
 	public static void main(String[] args) 
 	{
 		JFrame frame = new JFrame();
-		int gHeight = 960;
-		int gWidth = 1280;
+		int gHeight = 720;
+		int gWidth = 1060;
 		frame.setTitle("Meteors");
 		JPanel panel = new GamePanel(gWidth, gHeight);
 		frame.add(panel);

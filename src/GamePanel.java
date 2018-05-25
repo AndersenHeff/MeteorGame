@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
@@ -16,13 +18,13 @@ public class GamePanel extends JPanel implements Runnable
 	private Meteor[] meteor = new Meteor[m];
 	private Player player;
 	private Thread thread;
-	private boolean jTime;
+	private boolean jumped;
 	
 	
 	public GamePanel(int gWidth, int gHeight)
 	{
-		jTime = false;
-		player = new Player(630, 900, Color.BLUE, gWidth, gHeight);
+		jumped = false;
+		player = new Player(gWidth/2 - 10, gHeight - 45, Color.BLUE, gWidth, gHeight);
 		thread = new Thread(this);
 		thread.start();
 		
@@ -32,8 +34,6 @@ public class GamePanel extends JPanel implements Runnable
         }
 	}
 	
-	
-	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
@@ -42,12 +42,13 @@ public class GamePanel extends JPanel implements Runnable
 		{
 			meteor[i].draw(g);
 			//fix collision statement
-			if(player.getY() + player.getHeight() == meteor[i].getY())
+			
+			/*if(true)
 			{
 				player.setY(meteor[i].getY() - player.getHeight());
-			}
+			}*/
 		}
-
+        Toolkit.getDefaultToolkit().sync();
 	}
 	
 	
@@ -69,9 +70,13 @@ public class GamePanel extends JPanel implements Runnable
 			try {
 				//FPS
 				Thread.sleep(20);
-				if(jTime)
+				if(jumped)
 				{
-					player.setCountTime(player.getCountTime() + 3);
+					player.setA(player.getA() * 1.04);
+				}
+				else if(!jumped)
+				{
+					player.setA(-2);
 				}
 			} catch (InterruptedException e) { 
 				System.out.println("Thread stopped");
@@ -106,8 +111,13 @@ public class GamePanel extends JPanel implements Runnable
 	private Action jump = new AbstractAction("jump") {
 		@Override
 		public void actionPerformed(ActionEvent ae) {
-			jTime = true;
 			player.setJumpDir(JumpDirection.JUMP);
+			jumped = true;
+			if(intersect())
+			{
+				player.setJumpDir(JumpDirection.NONE);
+				jumped = false;
+			}
 		}
 	};
 	
@@ -118,6 +128,28 @@ public class GamePanel extends JPanel implements Runnable
 		im.put(keyStroke, name);
 		am.put(name, action);
 	}
-	
 
+	public boolean intersect()
+	{
+		for(int i = 0; i < m; i++)
+		{
+			if(player.intersects(meteor[i]))
+			{
+				System.out.println("intersect");
+				return true;
+			}
+		}
+		return false;
+	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

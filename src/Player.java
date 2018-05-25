@@ -1,11 +1,12 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Player extends GameObjects
+public class Player extends GameObjects implements Intersection
 {
 	private Direction dir;
 	private JumpDirection jumpDir;
-	private int countTime;
+	private double a;
 	public Player(int x, int y, Color c, int gWidth, int gHeight)
 	{
 		super(gWidth, gHeight);
@@ -14,7 +15,8 @@ public class Player extends GameObjects
 		this.c = c;
 		width = 20;
 		height = 20;
-		speed = 2;
+		speed = 4;
+		a = -2;
 	}
 	
 	
@@ -45,14 +47,22 @@ public class Player extends GameObjects
 		}
 		
 		
-		else if(jumpDir == JumpDirection.JUMP)
+		if(jumpDir == JumpDirection.JUMP)
 		{
 			//Make this a graph that increases, then decreases to infinity unless altered
-			y -= 8 - (countTime/20);
+			jumpArc();
 		}
+		else if(jumpDir == JumpDirection.NONE)
+		{
+			
+		}
+		
 	}
-
-
+	
+	public void jumpArc()
+	{
+		y -= 9 + a;
+	}
 	public void setDir(Direction dir) 
 	{
 		this.dir = dir;
@@ -63,15 +73,14 @@ public class Player extends GameObjects
 		this.jumpDir = jumpDir;
 	}
 	
-	
-	public void setCountTime(int countTime)
+	public void setA(double a)
 	{
-		this.countTime= countTime;
+		this.a = a;
 	}
 	
-	public int getCountTime()
+	public double getA()
 	{
-		return countTime;
+		return a;
 	}
 	
 }

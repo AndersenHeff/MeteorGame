@@ -1,5 +1,5 @@
 
 public enum JumpDirection 
 {
-	JUMP;
+	JUMP, NONE;
 }
